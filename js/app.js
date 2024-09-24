@@ -29,10 +29,7 @@
     $.get(`./views/${currentPage}.html`, (htmlData) => {
       $('main').html(htmlData);
 
-      let newPage = document.title;
-      $.get(`./views/${newPage}.html`, (htmlData) => {
-        $('lab2').html(htmlData);
-
+  
         // use browser's History API to track the sequence of pages
         history.pushState({}, "", `/${document.title}`);
       })
