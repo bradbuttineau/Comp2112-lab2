@@ -29,69 +29,69 @@
     $.get(`./views/${currentPage}.html`, (htmlData) => {
       $('main').html(htmlData);
 
-  
-        // use browser's History API to track the sequence of pages
-        history.pushState({}, "", `/${document.title}`);
-      })
+
+      // use browser's History API to track the sequence of pages
+      history.pushState({}, "", `/${document.title}`);
+    })
+  };
+
+  let LoadFooter = () => {
+    $.get('./views/shared/footer.html', (htmlData) => {
+      $('footer').html(htmlData);
     });
+  };
 
-    let LoadFooter = () => {
-      $.get('./views/shared/footer.html', (htmlData) => {
-        $('footer').html(htmlData);
+  // old js function syntax
+  // function Start() {
+  // modern js function syntax.  assign a variable to an anonymous function using a fat arrow =>
+  let Start = () => {
+    console.log('App Started');
+    let x = 1;
+    console.log(x);
+
+    // Display Header w/navbar + Footer
+    LoadHeader();
+    LoadFooter();
+
+    // fetch & show contacts
+    getContacts((data) => {
+      let list = document.getElementById('contactList');
+
+      // create a new listItem for each contact
+      data.forEach(contact => {
+        let listItem = document.createElement('li');
+        //listItem.innerText = contact.Name;
+        listItem.innerHTML = `<a href="mailto:${contact.Email}">${contact.Name}</a>`;
+        listItem.className = "list-group-item";
+        list.appendChild(listItem);
       });
-    };
+    });
+  };
 
-    // old js function syntax
-    // function Start() {
-    // modern js function syntax.  assign a variable to an anonymous function using a fat arrow =>
-    let Start = () => {
-      console.log('App Started');
-      let x = 1;
-      console.log(x);
-
-      // Display Header w/navbar + Footer
-      LoadHeader();
-      LoadFooter();
-
-      // fetch & show contacts
-      getContacts((data) => {
-        let list = document.getElementById('contactList');
-
-        // create a new listItem for each contact
-        data.forEach(contact => {
-          let listItem = document.createElement('li');
-          //listItem.innerText = contact.Name;
-          listItem.innerHTML = `<a href="mailto:${contact.Email}">${contact.Name}</a>`;
-          listItem.className = "list-group-item";
-          list.appendChild(listItem);
-        });
-      });
-    };
-
-    // run the function
-    window.addEventListener('load', Start);
-    //console.log(x); this causes an Undefined error.  x only lives inside Start()
-  }
+  // run the function
+  window.addEventListener('load', Start);
+  //console.log(x); this causes an Undefined error.  x only lives inside Start()
+})
 
 
   let updateCounter = (() => {
-    // now counter gets created and ininitalized to zero only once
-    let counter = 0;
+  // now counter gets created and ininitalized to zero only once
+  let counter = 0;
 
-    return () => {
-      // every click can use the same counter var now
-      counter++;
-      document.getElementById('counter').innerHTML = counter;
-    }
-
-  })();
-
-  let getContacts = (callback) => {
-    // use jquery to read then display our json file contents
-    // the data param gets filled once all the data is read from the file
-    $.getJSON('./data/contacts.json', (data) => {
-      console.log(data);
-      callback(data);
-    });
+  return () => {
+    // every click can use the same counter var now
+    counter++;
+    document.getElementById('counter').innerHTML = counter;
   }
-})
+
+})();
+
+let getContacts = (callback) => {
+  // use jquery to read then display our json file contents
+  // the data param gets filled once all the data is read from the file
+  $.getJSON('./data/contacts.json', (data) => {
+    console.log(data);
+    callback(data);
+  });
+}
+
